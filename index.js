@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const morgan = require( 'morgan' );
+const userRouter = require( './routes/user.route' );
+
 
 require( 'dotenv' ).config();
 require( './libs/dbConnect' );
@@ -21,6 +23,8 @@ app.get('/contact', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('index', { message: 'The About Page' });
 });
+
+app.use( '/users' , userRouter);
 
 app.get('*', (req, res) => {
     res.status(404).render('index', { message: 'Not Found' });
