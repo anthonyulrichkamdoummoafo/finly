@@ -1,5 +1,10 @@
 const express = require('express');
 const app = express();
+const morgan = require( 'morgan' );
+
+require( 'dotenv' ).config();
+require( './libs/dbConnect' );
+
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
