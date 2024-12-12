@@ -2,28 +2,31 @@ const express = require('express');
 const app = express();
 const morgan = require( 'morgan' );
 const userRouter = require( './routes/user.route' );
-
+const session = require( 'express-session' );
+const dashboardRouter = require( './routes/dashboard.route' );
 
 require( 'dotenv' ).config();
 require( './libs/dbConnect' );
 
-
 app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static('public'));
+app.use(morgan( 'dev' ));
+app.use(express. static ('./public' ));
+app.use(morgan( 'dev' ));
+app.use(express.urlencoded({ extended : false }));
 
-app.get('/', (req, res) => {
-    res.render('index', { message: 'Hello From Node.js' });
-});
 
-app.get('/contact', (req, res) => {
-    res.render('index', { message: 'The Contact Page' });
-});
+app.use(
+    session({
+        secret : process.env.AUTH_SECRET,
+        saveUninitialized : true ,
+        resave : false ,
+    })
+);
 
-app.get('/about', (req, res) => {
-    res.render('index', { message: 'The About Page' });
-});
-
+app.use( '/' , userRouter);
+app.use( '/dashboard' , dashboardRouter);
 app.use( '/users' , userRouter);
 
 app.get('*', (req, res) => {
